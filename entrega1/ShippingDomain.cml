@@ -1,3 +1,30 @@
+ContextMap ShippingContext {
+  type SYSTEM_LANDSCAPE
+  state TO_BE
+
+   contains ProviderContext, RouteContext, OrderLifeCycleContext, IdentityAccessContext,FinancialContext, WhareHouseContext, LocationsContext
+
+
+   IdentityAccessContext [D]<-[U] OrderLifeCycleContext
+   IdentityAccessContext [D]<-[U] RouteContext
+   ProviderContext [D]<-[U] RouteContext
+   ProviderContext [D]<-[U] OrderLifeCycleContext
+   IdentityAccessContext [D]<-[U] FinancialContext
+   WhareHouseContext [D]<-[U] RouteContext 
+   LocationsContext [D]<-[U] RouteContext
+
+
+}
+
+BoundedContext ProviderContext implements ProviderManagment
+BoundedContext RouteContext implements RouteManagment
+BoundedContext OrderLifeCycleContext implements OrderLifeCycleManagment
+BoundedContext IdentityAccessContext implements IdentityAccessManagment
+BoundedContext FinancialContext implements FinancialManagment
+BoundedContext WhareHouseContext implements WhareHouseManagment
+BoundedContext LocationsContext implements LocationsManagment
+
+
 Domain Shipping {
 	domainVisionStatement = "El modelo de dominio de Shipping representa la relacion entre un vendedor, distribuidor o cualquier comercio 
                             y un comprador que desee adquirir sus productos.
@@ -150,4 +177,3 @@ UserStory TransitionShipment{
 	I want to "crear" a "transicion" with its "location","usuario"
 	so that "puedo registrar el movimiento de un paquete"
 }
-
