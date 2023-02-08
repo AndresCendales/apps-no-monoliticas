@@ -12,7 +12,9 @@
 ........└── Flujo-de-envío-de-pedidos-DomiciliosAlpes-AS-IS.jpg \
 ........└── Flujo-de-envío-de-tarjetas-de-crédito-Banco-de-los-Alpes-AS-IS.jpg \
 ....├── ShippingDomain.cml\
-....└── DeliveryDomain.cml
+....├── DeliveryDomain.cml \
+....├── delivery_context.png \
+....└── shipping_context.png 
 
 
 ### Dominios y Subdominios
@@ -37,3 +39,5 @@ Flujo de envío de pedidos DomiciliosAlpes AS-IS
 
 Flujo de envío de tarjetas de crédito Banco de los Alpes AS-IS
 ![Flujo de envío de tarjetas de crédito Banco de los Alpes AS-IS](https://user-images.githubusercontent.com/78830247/217422950-3bcfd131-a920-41a5-a48e-9fe12f696fa3.jpg)
+
+Adicionalmente se identifica al menos un BoundedContext por cada subdominio definido, en las imagenes entrega1/delivery_context.png y entrega1/shipping_context.png muestran la representacion grafica de cada uno de los dominios de delivery y shipping respectivamente

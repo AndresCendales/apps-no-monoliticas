@@ -1,3 +1,27 @@
+ContextMap DeliveryContext {
+  type SYSTEM_LANDSCAPE
+  state TO_BE
+
+   contains FleetContext, RouteContext, OrderLifeCycleContext, RestaurantsContext, IdentityAccessContext,FinancialContext
+
+
+   IdentityAccessContext [D]<-[U]OrderLifeCycleContext
+   IdentityAccessContext [D]<-[U]RouteContext
+   FleetContext [D]<-[U] RouteContext
+   FleetContext [D]<-[U] OrderLifeCycleContext
+   IdentityAccessContext [D]<-[U] FinancialContext
+   RouteContext [D]<-[U]RestaurantsContext
+
+
+}
+
+BoundedContext FleetContext implements FleetManagment
+BoundedContext RouteContext implements RouteManagment
+BoundedContext OrderLifeCycleContext implements OrderLifeCycleManagment
+BoundedContext RestaurantsContext implements RestaurantsManagment
+BoundedContext IdentityAccessContext implements IdentityAccessManagment
+BoundedContext FinancialContext implements FinancialManagment
+
 Domain Delivery {
     domainVisionStatement = "El modelo de dominio de Delivery representa la relacion entre restaurantes, supermercados y establecimientos de comida con 
                             cualquier usuario que desee comprar sus productos.
