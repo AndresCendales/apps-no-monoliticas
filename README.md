@@ -4,10 +4,10 @@
 # Entrega 1
 
 ### Estructura del proyecto
-.
-└── entrega_1
-    ├── ShippingDomain.cml
-    └── DeliveryDomain.cml
+.\
+└── entrega_1 \
+....├── ShippingDomain.cml\
+....└── DeliveryDomain.cml
 
 
 ### Dominios y Subdominios
