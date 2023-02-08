@@ -1,0 +1,153 @@
+Domain Shipping {
+	domainVisionStatement = "El modelo de dominio de Shipping representa la relacion entre un vendedor, distribuidor o cualquier comercio 
+                            y un comprador que desee adquirir sus productos.
+                            Se opera a traves de un modelo multisourcing en donde el almacenamiento, transporte y entrega de paquetes sea 
+                            agnostico a la compania. Por lo que un paquete puede ser almacenado en bodegas propias o de terceros, transportado y entregado
+                            por flota propia o alquilada. 
+                            Durante el proceso de entrega cada uno de los lugares y actores que interactuan con el paquete es visible
+                            para los clientes y operadores."
+	
+	Subdomain RouteManagment supports CreateRoute, CreateRoute_Split, OptimizeRoute {
+		type = CORE_DOMAIN
+		domainVisionStatement = "RouteManagment administra la generacion, optimizacion, control y seguimiento de las rutas de entrega o almacenamiento que hacen 
+								los vehiculos para mover paquetes desde y hacia bodegas propias o de terceros con destino al cliente final."
+		Entity Route {
+			List<point> points
+			List<paquete> paquetes
+			role conductor
+			datetime inicio
+			datetime final
+		}
+	}
+
+	Subdomain OrderLifeCycleManagment supports CreateOrder, CreateOrder_Split,TransitionShipment, TransitionShipment {
+		type = CORE_DOMAIN
+		domainVisionStatement = "OrderLifeCycleManagment administra cada uno de los eventos logisticos de transporte, almacenamiento o entrega que 
+								tiene un paquete hasta la entrega final.
+								
+								A traves de los eventos se puede conocer a detalle cual es la ubicacion de cada paquete y cual es el responsable del mismo."
+		Entity Order {
+			List<Shipments> shipment
+		}
+		Entity Shipment{
+			location origen
+			location destino
+			List<product> products
+			List<event_> events
+		}
+		Entity Event_ {
+			usuario responsable
+			String status // Estado por los que pasa en paquete en_almacen, en_transito, en_camino, entregado, etc.
+		}
+	}
+
+	Subdomain ProviderManagment {
+		type = CORE_DOMAIN
+		domainVisionStatement = "ProviderManagment relaciona los proveedores de productos que tiene el sistema como marketplaces, distribuidores, vendedores, etc."
+		Entity Provider {
+			String name
+			String dni
+			String provider_type
+		}
+		Entity Product {
+			float weigth
+			float heigth
+			float width
+			float large
+			float price
+		}
+	}
+
+	Subdomain WhareHouseManagment {
+		type = GENERIC_SUBDOMAIN
+		domainVisionStatement = "WhareHouseManagment administra las bodegas propias o de terceros, centros de distribucion y cualquier otra ubicacion de almacenamiento
+								o transporte de productos."
+		Entity Wharehouse {
+			String name
+			location location
+			List<inventory> inventory
+		}
+		Entity Inventory {
+			product product
+			int quantity
+		}
+	}
+
+	Subdomain IdentityAccessManagment {
+		type = GENERIC_SUBDOMAIN
+		domainVisionStatement = "IdentityAccessManagment gestiona el acceso y permiso que tienen los usuarios del sistema para interactuar con cada componente."
+		Entity Usuario {
+			String name
+			role role
+		}
+		Entity Role {
+			String name
+			String descripcion
+			List<String> permisos
+		}
+	}
+
+	Subdomain LocationsManagment {
+		type = GENERIC_SUBDOMAIN
+		domainVisionStatement = "LocationsManagmente almacena la informacion de un punto geografico el cual puede ser una bodega, el destino de un paquete,
+								un centro de distribucion o cualquier otro objeto que pueda modelarse como un punto en el mapa."
+		Entity Location {
+			String street
+			point point
+			String zipcode
+			String description
+			String type_ // Puede ser de tipo privada, wharehouse, distribution_center, etc
+		}
+		Entity Point{
+			float latitud
+			float longitud
+		}
+	}
+
+	Subdomain FinancialManagment {
+		type = SUPPORTING_DOMAIN
+		domainVisionStatement = "FinancialManagment administra los procesos de pagos a proveedores, nomina, etc"
+	}
+
+}
+
+UserStory CreateRoute split by CreateRoute_Split {
+	As a "Operador logistico"
+    I want to "create" a "Ruta" with its "origen", "destino", "puntos"
+  so that "Puedo administrar los paquetes que debo entregar en cada uno de los puntos donde debo parar."
+}
+
+UserStory CreateRoute_Split {
+	As a "Operador logistico"
+	I want to "search" a "Ruta" with its "origen" , "destino" , "puntos"
+	I want to update a "Ruta" with its "origen" , "destino" , "puntos"
+	I want to delete a "Ruta" with its "origen" , "destino" , "puntos"
+	so that "Puedo administrar los paquetes que debo entregar en cada uno de los puntos donde debo parar. "
+}
+
+UserStory OptimizeRoute {
+	As a "Operador logistico"
+	I want to "optimizar" a "Ruta" with its "puntos de entrega"
+	so that "Puedo entregr los paquetes en el menor tiempo posible."
+}
+
+UserStory CreateOrder split by CreateOrder_Split {
+	As a "comprador de XDA"
+	I want to "crear" a "orden" with its "productos a comprar"
+	so that "puedo obtener los productos de mi interes"
+}
+
+UserStory CreateOrder_Split {
+	As a "comprador de CDA"
+	I want to "cancel" a "orden" with its "productos a comprar"
+	I want to "search" a "orden" with its "productos a comprar"
+	I want to update a "orden" with its "productos a comprar"
+	so that "puedo obtener los productos de mi interes"
+}
+
+UserStory TransitionShipment{
+	As a "operador de CDA"
+	I want to "crear" a "transicion" with its "location","usuario"
+	so that "puedo registrar el movimiento de un paquete"
+}
+
